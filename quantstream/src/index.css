@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.table-container {
+    height: 400px; /* Set the initial height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    resize: both; /* Allow resizing in both directions */
+    min-height: 200px; /* Set a minimum height */
+    min-width: 300px; /* Set a minimum width */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+}
+
+.card-content {
+    height: 400px; /* Make the card content take the full height of the container */
+    width: 30%; /* Make the card content take the full width of the container */
+}
