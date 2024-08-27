@@ -35,7 +35,7 @@ function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signin" element={isAuthenticated ? <Navigate to="/dashboard" /> : <SignIn />} />
                 <Route path="/callback" element={<Callback />} />
                 <Route path="/*" element={isAuthenticated ? <PrivateRoutes /> : <Navigate to="/signin" />} />
             </Routes>
