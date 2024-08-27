@@ -1,5 +1,6 @@
 import { UserAuthForm } from './components/user-auth-form';  // Ensure the path matches
 import ViteLogo from '@/assets/hydrovault.png';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function SignIn() {
   return (

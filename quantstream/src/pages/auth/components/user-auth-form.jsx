@@ -3,13 +3,11 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Cookies from 'js-cookie';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PasswordInput } from '@/components/ui/password-input';
 import { cn } from '@/lib/utils';
-import { obtainTokens } from '@/lib/emnetRestApi';
-import { useAuth } from '@/lib/authContext';
 
 const formSchema = z.object({
   username: z
@@ -30,7 +28,7 @@ export function UserAuthForm({ className, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { loginWithRedirect } = useAuth0();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -44,15 +42,12 @@ export function UserAuthForm({ className, ...props }) {
     setIsLoading(true);
     setError(null);
     try {
-      const tokens = await obtainTokens(data.username, data.password);
-      Cookies.set('accessToken', tokens.access);
-      Cookies.set('refreshToken', tokens.refresh);
-      login(
-        data.username,
-      );
-      navigate('/');
+      await loginWithRedirect({
+        username: data.username,
+        password: data.password,
+      });
     } catch (err) {
-      setError('Login failed. Please check your credentials and try again.');
+      setError("Login failed. Please check your credentials and try again.");
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +80,7 @@ export function UserAuthForm({ className, ...props }) {
         </div>
         {error && <div className='text-red-500'>{error}</div>}
         <Button type='submit' className='mt-2' loading={isLoading}>
-          Login
+          Login with Auth0
         </Button>
       </form>
     </div>
